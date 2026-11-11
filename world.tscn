@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://4nll32a4581d"]
+
+[ext_resource type="Script" uid="uid://nidf0bg37bnb" path="res://hammer.gd" id="1_f3sb7"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gv5m4"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_f3sb7"]
+sky_material = SubResource("ProceduralSkyMaterial_gv5m4")
+
+[sub_resource type="Environment" id="Environment_fj7yv"]
+background_mode = 2
+sky = SubResource("Sky_f3sb7")
+glow_enabled = true
+
+[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_it4ap"]
+map_width = 4
+map_depth = 4
+map_data = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cdsqw"]
+albedo_color = Color(0, 0.6666667, 0, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_it4ap"]
+material = SubResource("StandardMaterial3D_cdsqw")
+size = Vector2(4, 4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_it4ap"]
+size = Vector3(0.45, 0.125, 0.45)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_it4ap"]
+size = Vector3(0.45, 0.125, 0.45)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cdsqw"]
+size = Vector3(0.7, 0.7, 0.7)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4xpdj"]
+albedo_color = Color(0.53333336, 0.53333336, 0.53333336, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cdsqw"]
+material = SubResource("StandardMaterial3D_4xpdj")
+size = Vector3(0.7, 0.7, 0.7)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gv5m4"]
+albedo_color = Color(0.53333336, 0.26666668, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_it4ap"]
+material = SubResource("StandardMaterial3D_gv5m4")
+top_radius = 0.1
+bottom_radius = 0.1
+height = 0.7
+
+[node name="World" type="Node3D" unique_id=179410969]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=634758260]
+environment = SubResource("Environment_fj7yv")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1032056679]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=732759310]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=397183766]
+shape = SubResource("HeightMapShape3D_it4ap")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=1638654599]
+mesh = SubResource("PlaneMesh_it4ap")
+
+[node name="Plate" type="RigidBody3D" parent="." unique_id=158536495]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mass = 2.5
+continuous_cd = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Plate" unique_id=1038728964]
+mesh = SubResource("BoxMesh_it4ap")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plate" unique_id=773248827]
+shape = SubResource("BoxShape3D_it4ap")
+
+[node name="Hammer" type="RigidBody3D" parent="." unique_id=383089892]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+mass = 70.0
+continuous_cd = true
+script = ExtResource("1_f3sb7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hammer" unique_id=1176535374]
+shape = SubResource("BoxShape3D_cdsqw")
+
+[node name="Head" type="MeshInstance3D" parent="Hammer" unique_id=1810680366]
+mesh = SubResource("BoxMesh_cdsqw")
+
+[node name="Handle" type="MeshInstance3D" parent="Hammer" unique_id=1404038633]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+mesh = SubResource("CylinderMesh_it4ap")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1871289118]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 6)
